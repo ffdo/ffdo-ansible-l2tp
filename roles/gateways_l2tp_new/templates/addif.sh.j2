@@ -1,0 +1,10 @@
+#!/bin/bash
+INTERFACE="$3"
+if grep -Fq "$8" "/srv/tunneldigger/sperrliste.txt"
+then
+	echo "Der Knoten $8 ist auf der Sperrliste, verweigere Zugang."
+	exit 1
+else
+	ip link set dev $INTERFACE up mtu {{tunneldigger.pmtu}}
+	brctl addif br{{item.key}} $INTERFACE
+fi

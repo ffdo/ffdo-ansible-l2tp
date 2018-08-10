@@ -1,0 +1,22 @@
+router id {{ secondary_vnic_ip4 }};
+log syslog all;
+
+protocol kernel {
+    persist;
+    scan time 10;
+    device routes;
+    import all;
+    export all;
+    kernel table 42;
+};
+
+protocol device {
+    scan time 10;
+};
+
+protocol static unr_def {
+    preference 1;
+    route ::/0 unreachable;
+};
+
+include "/etc/bird/conf6.d/*.conf";

@@ -1,0 +1,12 @@
+---
+
+- name: Ensure unbound is installed
+  apt: name=unbound
+
+- name: Install unbound configuration
+  template: src=unbound.conf.j2 dest=/etc/unbound/unbound.conf.d/supernode.conf
+  notify: Restart unbound
+
+- name: Ensure unbound is enabled
+  service: name=unbound enabled=yes
+  notify: Restart unbound

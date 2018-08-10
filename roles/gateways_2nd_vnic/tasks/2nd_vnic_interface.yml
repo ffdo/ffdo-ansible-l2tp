@@ -1,0 +1,6 @@
+---
+
+- name: Setup secondary vnic interface (used for internal routing to old supernodes)
+  template:
+    dest: "/etc/network/interfaces.d/05_2nd_vnic_interface.cfg"
+    src: "2nd_vnic_interface.cfg.j2"

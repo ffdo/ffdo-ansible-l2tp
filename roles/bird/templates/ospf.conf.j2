@@ -1,0 +1,41 @@
+define FFDO_subnet_new =
+[
+        10.233.128.0/17+
+];
+
+define FFDO_subnet_old =
+[
+        10.233.0.0/18+
+];
+
+define AS31371_nets =
+[
+        91.204.4.0/22{24,32},
+        195.160.168.0/23+,
+        193.43.221.0/24+
+];
+
+protocol ospf ospf5 {
+
+#        import where net ~ AS31371_nets || net ~ FFDO_subnet_old;
+        import where net ~ FFDO_subnet_old;
+        export filter {
+                if net ~ FFDO_subnet_new then {
+                        ospf_metric1 = 10;
+                        accept;
+                }
+                reject;
+        };
+
+        area 0.0.0.0 {
+                interface "{{secondary_vnic}}" {
+                        cost 10;
+                        type broadcast;
+                        hello 10;
+                        retransmit 5;
+                        dead 40;
+                        wait 10;
+                };
+        };
+};
+

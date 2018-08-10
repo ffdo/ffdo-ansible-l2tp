@@ -1,0 +1,4 @@
+{% for admin in administratorenteam %}
+{{ lookup('file', 'inventory/keyfiles/' + admin + '.pub') }}
+{% endfor %}
+

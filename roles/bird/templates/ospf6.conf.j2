@@ -1,0 +1,37 @@
+define FFDO6_subnet_new =
+[
+	2a03:2260:300a:2000::/64+,
+	2a03:2260:300a:2100::/64+,
+	2a03:2260:300a:2200::/64+,
+	2a03:2260:300a:2300::/64+,
+	2a03:2260:300a:2400::/64+,
+	2a03:2260:300a:2500::/64+,
+	2a03:2260:300a:2600::/64+,
+	2a03:2260:300a:2700::/64+,
+	2a03:2260:300a:2800::/64+,
+	2a03:2260:300a:2900::/64+,
+	2a03:2260:300a:2a00::/64+
+];
+
+define FFDO6_subnet_old =
+[
+	2a03:2260:300a:1000::/64+
+];
+
+protocol ospf ospfffdo6 {
+
+#	import where net ~ FFDO6_subnet_old;
+	import all;
+	export where net ~ FFDO6_subnet_new;
+
+	area 0.0.0.0 {
+		interface "{{secondary_vnic}}" {
+			cost 10;
+			type broadcast;
+			hello 10; 
+			retransmit 5; 
+			dead 40;
+			wait 10;
+		};
+	};
+};

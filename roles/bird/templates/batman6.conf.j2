@@ -1,0 +1,9 @@
+{% if domaenenliste is defined %}
+{% for domaene in domaenenliste|dictsort %}
+
+protocol direct bat{{domaene[0]}} {
+        interface "bat{{domaene[0]}}";
+};
+
+{% endfor %}
+{% endif %}
