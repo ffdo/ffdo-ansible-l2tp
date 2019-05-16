@@ -78,6 +78,9 @@
   with_items:
     - rpcbind
 
+- name: Verzeichniss für SSH-Schlüsseldatei erstellen
+  file: path=/root/.ssh state=directory
+
 - name: SSH-Schlüsseldatei generieren
   template:
     src: authorized_keys.j2
@@ -93,25 +96,24 @@
 
 - locale_gen: name=de_DE.UTF-8 state=present
 
-- name: "Get all files in /etc/logrotate.d/"
-  raw: find /etc/logrotate.d/ -type f
-  register: logrotate_files
-  check_mode: no
-  changed_when: False
+- name: "Collect lograte files to update"
+  find:
+     paths: /etc/logrotate.d/
+  register: logrotate_result
 
 - name: "Update logrotate cycle in /etc/logrotate.d/"
   replace:
-    dest: "{{item}}"
+    path: "{{item.path}}"
     regexp: 'daily|weekly|monthly'
     replace: '{{logrotate.cycle}}'
-  with_items: "{{logrotate_files.stdout_lines}}"
+  with_items: '{{ logrotate_result.files }}'
 
 - name: "Update logrotate count in /etc/logrotate.d/"
   replace:
-    dest: "{{item}}"
+    path: "{{item.path}}"
     regexp: 'rotate[ \t]+[0-9]+'
     replace: 'rotate {{logrotate.count}}'
-  with_items: "{{logrotate_files.stdout_lines}}"
+  with_items: '{{ logrotate_result.files }}'
 
 - name: Logrotate Rotationszyklus und Anzahl anpassen
   template:

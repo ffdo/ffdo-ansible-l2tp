@@ -44,12 +44,17 @@
   with_items: "{{domaenenliste | default([])}}"
   when: domaenenliste is defined
 
-- name: configure bird.conf
-  template: 
+- name: copy generic bird.conf to base directory
+  template:
     src: bird.conf.j2
     dest: /etc/bird/bird.conf
   notify:
     - configure bird
+
+- name: make sure conf.d directory exists
+  file:
+    path: /etc/bird/conf.d
+    state: directory
 
 - name: general (disabled) bird.conf from MS setup
   template: 
@@ -58,7 +63,6 @@
   notify:
     - configure bird
 
-
 - name: configure batman.conf
   template: 
     src: batman.conf.j2
@@ -66,19 +70,18 @@
   notify:
     - configure bird
 
-- name: configure ospf.conf (temporary nat-routing over old supernodes)
-  template: 
-    src: ospf.conf.j2
-    dest: /etc/bird/conf.d/ospf.conf
-  notify:
-    - configure bird
-
-- name: configure bird6.conf
+- name: copy generic bird6.conf to base directory
   template:
     src: bird6.conf.j2
     dest: /etc/bird/bird6.conf
   notify:
-    - configure bird6
+    - configure bird
+
+- name: make sure conf6.d directory exists
+  file:
+    path: /etc/bird/conf6.d
+    state: directory
+
 
 - name: general (disabled) bird6.conf from MS setup
   template: 
@@ -91,13 +94,6 @@
   template: 
     src: batman6.conf.j2
     dest: /etc/bird/conf6.d/batman6.conf
-  notify:
-    - configure bird
-
-- name: configure ospf6.conf (temporary routing over old supernodes)
-  template: 
-    src: ospf6.conf.j2
-    dest: /etc/bird/conf6.d/ospf6.conf
   notify:
     - configure bird
 

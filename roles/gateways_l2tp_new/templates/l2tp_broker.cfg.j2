@@ -1,6 +1,7 @@
 [broker]
 ; IP address the broker will listen and accept tunnels on
-address={{ansible_eth0.ipv4.address}}
+; Test Stefan: address=ansible_eth0.ipv4.address  (Klammern entfernt!)
+address={{primary_vnic_ip4}}
 ; Ports where the broker will listen on
 {% if tunneldigger.instance_per_domain == True %}
 port={{20000 + (item.key | int)}}
@@ -12,7 +13,7 @@ port={{20000 + (item.key | int)}}
 port={{ports|join(',')}}
 {% endif %}
 ; Interface with that IP address
-interface={{tunneldigger.interface}}
+interface={{primary_vnic}}
 ; Maximum number of tunnels that will be allowed by the broker
 max_tunnels={{tunneldigger.max_tunnels}}
 ; Tunnel port base

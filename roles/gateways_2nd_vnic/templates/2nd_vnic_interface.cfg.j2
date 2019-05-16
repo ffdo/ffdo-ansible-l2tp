@@ -5,10 +5,10 @@ auto {{ secondary_vnic }}
 iface {{ secondary_vnic }} inet static
     address {{ secondary_vnic_ip4 }}
     netmask {{ secondary_vnic_netmask4 }}
-    pre-up ip rule add from 10.233.128.0/17 table ffnet
-    pre-up ip rule add to 10.233.128.0/17 table ffnet
-    post-up ip route add default via 10.233.254.5 dev eth1 table ffnet
-    pre-down ip route del default via 10.233.254.5 dev eth1 table ffnet
-    post-down ip rule del from 10.233.128.0/17 table ffnet
-    post-down ip rule del to 10.233.128.0/17 table ffnet
+    pre-up ip rule add from 10.0.0.0/8 table ffnet
+    pre-up ip rule add to 10.0.0.0/8 table ffnet
+    post-up ip route add default via 192.168.100.5 dev eth1 table ffnet
+    pre-down ip route del default via 192.168.100.5 dev eth1 table ffnet
+    post-down ip rule del from 10.0.0.0/8 table ffnet
+    post-down ip rule del to 10.0.0.0/8 table ffnet
 

@@ -1,0 +1,290 @@
+# This file is managed by ansible, don't make changes here - they will be overwritten.
+log syslog { debug, trace, info, remote, warning, error, auth, fatal, bug };
+router id 1;
+
+table ffnet;
+
+filter freifunk {
+	if net ~ 2a03:2260:300a::/48 then accept;
+	reject;
+}
+
+protocol kernel {
+	scan time 20;
+	import all;
+	export all;
+	table ffnet;
+	kernel table 42;
+	device routes;
+	persist;
+};
+
+protocol radv {
+	interface "bat01" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2000::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2000::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat02" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2100::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2100::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat03" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2200::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2200::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat04" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2300::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2300::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat05" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2400::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2400::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat06" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2500::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2500::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat07" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2600::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2600::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat08" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2700::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2700::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat09" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2800::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2800::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat10" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2900::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2900::1;
+		};
+		dnssl "ffdo";
+	};
+	interface "bat11" {
+		max ra interval 20;
+		link mtu 1280;
+		prefix 2a03:2260:300a:2a00::/64 {
+		};
+		rdnss {
+			ns 2a03:2260:300a:2a00::1;
+		};
+		dnssl "ffdo";
+	};
+};
+
+
+protocol bfd {
+	table ffnet;
+	interface "gre*";
+	interface "bck*";
+	multihop {
+		passive;
+	};
+};
+
+protocol device {
+	scan time 10;
+};
+
+protocol ospf {
+	table ffnet;
+	import filter freifunk;
+	export all;
+	area 0.0.0.0 {
+		interface "bat*" {
+			stub;
+		};
+		interface "bck-*";
+		interface "lo" {
+			stub;
+		};
+	};
+};
+
+function is_default() {
+	return (net ~ [::/0]);
+};
+
+filter export_to_upstream_filter {
+	if source = RTS_STATIC then accept;
+	reject;
+};
+
+protocol static static_Gesamtnetzwerk {
+	table ffnet;
+	route 2a03:2260:300a::/48 reject;
+};
+
+protocol static static_domaene01 {
+	table ffnet;
+	route 2a03:2260:300a:2000::/56 reject;
+};
+protocol static static_domaene02 {
+	table ffnet;
+	route 2a03:2260:300a:2100::/56 reject;
+};
+protocol static static_domaene03 {
+	table ffnet;
+	route 2a03:2260:300a:2200::/56 reject;
+};
+protocol static static_domaene04 {
+	table ffnet;
+	route 2a03:2260:300a:2300::/56 reject;
+};
+protocol static static_domaene05 {
+	table ffnet;
+	route 2a03:2260:300a:2400::/56 reject;
+};
+protocol static static_domaene06 {
+	table ffnet;
+	route 2a03:2260:300a:2500::/56 reject;
+};
+protocol static static_domaene07 {
+	table ffnet;
+	route 2a03:2260:300a:2600::/56 reject;
+};
+protocol static static_domaene08 {
+	table ffnet;
+	route 2a03:2260:300a:2700::/56 reject;
+};
+protocol static static_domaene09 {
+	table ffnet;
+	route 2a03:2260:300a:2800::/56 reject;
+};
+protocol static static_domaene10 {
+	table ffnet;
+	route 2a03:2260:300a:2900::/56 reject;
+};
+protocol static static_domaene11 {
+	table ffnet;
+	route 2a03:2260:300a:2a00::/56 reject;
+};
+
+protocol kernel 'kernel_master' {
+	scan time 20;
+	table master;
+	kernel table 254;
+	import all;
+	export all;
+	persist;
+};
+
+protocol static {
+	table master;
+	import all;
+	export none;
+};
+
+protocol direct {
+	interface "lo";
+	interface "tun-ffrl*";
+	interface "gre-*";
+	interface "bck-*";
+	interface "bat*";
+	table ffnet;
+}
+
+template bgp internal {
+	table ffnet;
+	local as 65403;
+	import filter {
+		if is_default() then
+			preference = 99;
+		else
+			preference = 160;
+		accept;
+	};
+	export filter {
+		if source = RTS_BGP then accept;
+		else reject;
+	};
+	gateway direct;
+	direct;
+	next hop self;
+};
+
+protocol bgp ibgp_sn_dev2 from internal {
+	neighbor 2a03:2260:115:ffa1::1:2:0 as 65403;
+}
+
+
+template bgp uplink {
+	table ffnet;
+	local as 65403;
+	import where is_default();
+	export filter export_to_upstream_filter;
+	gateway recursive;
+}
+
+protocol bgp ffrl_dus from uplink {
+	description "Rheinland Backbone";
+	source address 2a03:2260:0:3f::2;
+	neighbor 2a03:2260:0:3f::1 as 201701;
+};
+
+protocol bgp ffrl_fra from uplink {
+	description "Rheinland Backbone";
+	source address 2a03:2260:0:3e::2;
+	neighbor 2a03:2260:0:3e::1 as 201701;
+};
+

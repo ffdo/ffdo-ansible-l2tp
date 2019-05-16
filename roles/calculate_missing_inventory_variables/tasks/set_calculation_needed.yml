@@ -8,10 +8,10 @@
 
 - name: Partner setzen
   when: "domaenenliste[dom].calculation_needed is defined and domaenenliste[dom].calculation_needed == 'true'"
-  with_items: "{{ groups['gateways'] }}"
+  with_items: "{{ groups['supernodes'] }}"
   loop_control:
     loop_var: gates
-  include: find_partner.yml gateway={{gates}}
+  include: find_partner.yml supernode={{gates}}
 
 - name: server_id auf 2 setzen, falls andere vm_id größer
   when: "domaenenliste[dom].calculation_needed is defined and domaenenliste[dom].calculation_needed == 'true' and hostvars[domaenenliste[dom].partner].vm_id > vm_id"

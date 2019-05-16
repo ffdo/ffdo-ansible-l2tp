@@ -12,15 +12,15 @@ filter freifunk {
 	reject;
 }
 
-protocol kernel {
-	scan time 20;
-	import all;
-	export all;
-	table ffnet;
-	kernel table 42;
-	device routes;
-	persist;
-};
+#protocol kernel {
+#	scan time 20;
+#	import all;
+#	export all;
+#	table ffnet;
+#	kernel table 42;
+#	device routes;
+#	persist;
+#};
 
 {% if domaenenliste is defined %}
 protocol radv {
@@ -108,14 +108,14 @@ protocol static 'static_{{inventory_hostname_short}}' {
 };
 {% endif %}
 
-protocol kernel 'kernel_master' {
-	scan time 20;
-	table master;
-	kernel table 254;
-	import all;
-	export all;
-	persist;
-};
+#protocol kernel 'kernel_master' {
+#	scan time 20;
+#	table master;
+#	kernel table 254;
+#	import all;
+#	export all;
+#	persist;
+#};
 
 protocol static {
 	table master;
