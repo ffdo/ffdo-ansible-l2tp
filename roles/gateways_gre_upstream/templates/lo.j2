@@ -1,5 +1,7 @@
 auto lo
 iface lo inet loopback
+         up ip address add {{ loopback_ipv6 }} dev lo
+         up ip address add {{ loopback_ipv4 }} dev lo
 #{% if ffrl_tun is defined and ffrl_nat_ip is defined %}
 #        up ip address add {{ ffrl_nat_ip }} dev lo
 #        up ip rule add from {{ ffrl_nat_ip }} table ffnet

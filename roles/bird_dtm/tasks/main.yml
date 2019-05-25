@@ -58,7 +58,6 @@
   notify:
     - configure bird
 
-
 - name: configure batman.conf
   template: 
     src: batman.conf.j2

@@ -25,8 +25,7 @@
     repo: "{{ item }}"
     state: present
   with_items:
-    - "deb http://ftp.de.debian.org/debian/ {{ ansible_distribution_release }} main"
-    - "deb http://ftp.de.debian.org/debian/ {{ ansible_distribution_release }}-updates main"
+    - "deb http://cdn-fastly.deb.debian.org/debian/ {{ ansible_distribution_release }} main"
     - "deb http://security.debian.org/ {{ ansible_distribution_release }}/updates main"
   when: ansible_distribution == "Debian"
 
@@ -69,6 +68,7 @@
     - build-essential
     - ethtool
     - mc
+    - net-tools
 
 - name: uninstall unneeded packages
   apt:

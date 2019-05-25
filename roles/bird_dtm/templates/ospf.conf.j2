@@ -1,34 +1,45 @@
-define FFDO_subnet_new =
+define FFDO_subnet_new = 
 [
-        10.0.0.0/8+
+        10.0.0.0/12{12,24} 
 ];
 
-define FFDO_subnet_old =
+define FFDO_subnet_old = 
 [
-        10.233.0.0/18+
+        10.233.0.0/18+ 
 ];
 
 define AS31371_nets =
 [
-        91.204.4.0/22{24,32},
+        91.204.4.0/22+,
         195.160.168.0/23+,
         193.43.221.0/24+
 ];
 
-protocol ospf ospf5 {
+define AS35675_nets =
+[
+        193.43.220.0/23+
+];
 
-#        import where net ~ AS31371_nets || net ~ FFDO_subnet_old;
-        import where net ~ FFDO_subnet_old;
+
+protocol ospf ospf6 {
+
+        import where net ~ FFDO_subnet_old ||
+                     net ~ AS31371_nets ||
+                     net ~ AS35675_nets;
         export filter {
-                if net ~ FFDO_subnet_new then {
-                        ospf_metric1 = 10;
+                if net ~ FFDO_subnet_new ||
+                   net ~ AS35675_nets
+                then    {
+                        if ifname != "lo"
+                        then ospf_metric1 = 10;
                         accept;
-                }
-                reject;
+                        }
+                else reject;
         };
 
         area 0.0.0.0 {
-                interface "{{secondary_vnic}}" {
+                interface {{ loopback_ipv4 }} { stub yes; cost 1; };
+                interface "eth1" {
                         cost 10;
                         type broadcast;
                         hello 10;
