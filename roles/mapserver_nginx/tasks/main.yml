@@ -99,7 +99,7 @@
   when: actsslconf.changed
 
 - name: Clone bootstrap and css files
-  git: repo=https://github.com/FreiFunkMuenster/nodesmap-page.git dest=/opt/nodesmappage force=yes
+  git: repo=https://github.com/ffdo/nodesmap-page.git dest=/opt/nodesmappage force=yes
 
 - name: link css
   file:
