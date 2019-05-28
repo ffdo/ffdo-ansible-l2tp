@@ -1,6 +1,6 @@
 # Managed by Ansible... do not update manually as changes will be overwritten
 
-router id {{ ipaddr('loopback_ipv4') }};
+router id {{loopback_ipv4 | ipaddr('address') }};
 log syslog all;
 
 protocol kernel { 
