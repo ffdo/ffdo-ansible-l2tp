@@ -1,0 +1,17 @@
+# This file is managed by ansible, don't make changes here - they will be overwritten.
+
+{% for host in groups['supernodes'] %}
+{%   if ansible_ssh_host != hostvars[host].ansible_ssh_host and hostvars[host].hoster != hoster %}
+# GRE Tunnel between {{ ansible_hostname }} and {{host}}
+# IPv4: {{ primary_vnic_ip4 }} -> {{ hostvars[host].primary_vnic_ip4 }}
+# auto ffdo-gre-{{ ansible_hostname }}-{{host}}
+# iface ffdo-gre-{{ ansible_hostname }}-{{host}} inet static
+#     address ???
+#     netmask ???
+#     pre-up ip link add $IFACE type gre local {{ primary_vnic_ip4 }} remote {{ hostvars[host].primary_vnic_ip4 }} ttl 255
+#     pre-up ip link set $IFACE up multicast on
+#
+# IPv6: ToDo??
+{%   endif %}
+
+{% endfor %}

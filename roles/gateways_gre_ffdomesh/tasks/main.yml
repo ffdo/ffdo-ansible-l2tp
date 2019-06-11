@@ -1,0 +1,11 @@
+---
+- name: let read interfaces from interfaces
+  lineinfile: dest="/etc/network/interfaces" line="source /etc/network/interfaces.d/*"
+  notify:
+#    - restart networking
+
+- name: Create interfaces - gretap interfaces between supernodes
+  template: src="gre_ffdomesh.j2" dest="/etc/network/interfaces.d/50_gre_ffdomesh.cfg"
+  notify:
+#    - restart networking
+#  when: ffrl_tun is defined or ffnw_tun is defined
