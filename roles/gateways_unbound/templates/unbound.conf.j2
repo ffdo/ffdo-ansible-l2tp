@@ -19,10 +19,6 @@ local-data: "ntp.services.ffdo.de. A {{domaenen[domaene[0]].ffv4_network | ipadd
 
 local-data: "update.services.ffdo.de. AAAA {{update_server}}"
 
-# Contact for below DNS Names "lumo@lm3.de"
-local-data:  "unifi.services.ffdo.de. AAAA 2a03:2260:300a:1000:4261:86ff:fee7:0fbe"
-local-data:  "unifi.services.ffdo.de. A 10.233.8.123"
-
 forward-zone:
 	name: .
 {% if kea.dns.additional %}{% for entry in kea.dns.additional %}
