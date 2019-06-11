@@ -3,14 +3,14 @@
 
 auto {{ secondary_vnic }}
 iface {{ secondary_vnic }} inet static
-    address {{ secondary_vnic_ip4 }}
-    netmask {{ secondary_vnic_netmask4 }}
+    address {{ secondary_vnic_ip4 | ipaddr('address') }}
+    netmask {{ secondary_vnic_ip4 | ipaddr('netmask') }}
     pre-up ip rule add from 10.0.0.0/8 table ffnet
     pre-up ip rule add to 10.0.0.0/8 table ffnet
     pre-up ip rule add from {{ dudl_ipv4 }} table ffnet
     pre-up ip rule add to {{ dudl_ipv4 }} table ffnet
-    pre-up ip rule add from {{ dudl_ipv6 }} table ffnet
-    pre-up ip rule add to {{ dudl_ipv6 }} table ffnet
+    pre-up ip -6 rule add from {{ dudl_ipv6 }} table ffnet
+    pre-up ip -6 rule add to {{ dudl_ipv6 }} table ffnet
 
     post-up ip route add default via 192.168.100.5 dev eth1 table ffnet
     pre-down ip route del default via 192.168.100.5 dev eth1 table ffnet
@@ -18,6 +18,6 @@ iface {{ secondary_vnic }} inet static
     post-down ip rule del to 10.0.0.0/8 table ffnet
 #   post-down ip rule del from {{ dudl_ipv4 }} table ffnet
 #   post-down ip rule del to {{ dudl_ipv4 }} table ffnet
-#   post-down ip rule del from {{ dudl_ipv6 }} table ffnet
-#   post-down ip rule del to {{ dudl_ipv6 }} table ffnet
+#   post-down ip -6 rule del from {{ dudl_ipv6 }} table ffnet
+#   post-down ip -6 rule del to {{ dudl_ipv6 }} table ffnet
 
